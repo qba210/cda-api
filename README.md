@@ -1,5 +1,5 @@
 # cda-api
-api for [cda]["https://www.cda.pl"]
+api for [cda]("https://www.cda.pl")
 
 # example of use
 ```js
