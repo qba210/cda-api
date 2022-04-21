@@ -7,7 +7,7 @@ axios.defaults.withCredentials = true;
 export interface SearchResult{
     title: string;
     miniatureURL: string;
-    duriation: string;
+    duration: string;
     link: string;
 }
 
@@ -29,7 +29,7 @@ export class CdaSearchApi{
             ret.push({
                 title,
                 miniatureURL,
-                duriation: time,
+                duration: time,
                 link
             })
         })
