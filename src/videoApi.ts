@@ -1,10 +1,18 @@
 import axios from "axios";
 import cheerio, { Cheerio } from "cheerio";
 import { PlayerData } from "./interfaces";
-import { JSDOM } from "jsdom";
-const dom = new JSDOM(`<!DOCTYPE html><html><head></head><body></body></html>`);
-const doc = dom.window.document;
-const win = dom.window;
+import { DOMWindow, JSDOM } from "jsdom";
+
+let doc: Document;
+let win: Window | DOMWindow;
+if (!document){
+    const dom = new JSDOM(`<!DOCTYPE html><html><head></head><body></body></html>`);
+    doc = dom.window.document;
+    win = dom.window;
+}else{
+    doc = document;
+    win = window;
+}
 
 axios.defaults.withCredentials = true;
 
