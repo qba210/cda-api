@@ -149,7 +149,6 @@ export class CdaVideoApi{
         //     data: params,
         //     withCredentials: true
         // })
-        console.log(res);
     }
     
     /**
