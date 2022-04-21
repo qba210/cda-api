@@ -67,6 +67,16 @@ export class CdaVideoApi{
     }
 
     static async fromURL(url: string): Promise<CdaVideoApi>{
+        
+        return CdaVideoApi.construct(this.URLtoID(url));
+    }
+
+    /**
+     * Gets video ID from URL
+     * @param url URL of video
+     * @returns ID of video
+     */
+    static URLtoID(url: string): string{
         let surl = url.split("/").reverse();
         let id;
         if (surl[0] === "vfilm"){
@@ -74,7 +84,7 @@ export class CdaVideoApi{
             surl.reverse();
         }
         id = surl[0];
-        return CdaVideoApi.construct(id);
+        return id;
     }
 
     /**
@@ -90,11 +100,21 @@ export class CdaVideoApi{
     }
 
     /**
-     * 
+     * Gets video ID
+     * @returns Video ID
+     */
+    getVideoID(): string{
+        return this.id;
+    }
+
+
+
+    /**
+     * Gets direct video url
      * @param quality Quality of video (get from getQualities())
      * @returns Direct (downloadable) url of video
      */
-    async getVideoLink(quality: string): Promise<string>{
+    async getDirectVideoLink(quality: string): Promise<string>{
         let hash = this.playerData.video.hash2;
         let key = parseInt(this.playerData.api.ts.split("_")[0]);
         let pos = await axios({
@@ -108,6 +128,12 @@ export class CdaVideoApi{
         });
         return pos.data.result.resp;
     }
+
+    /**
+     * ⚠⚠⚠ DOES NOT WORK! ⚠⚠⚠    
+     * you can use this as placeholder for now or contribute to fix it
+     * @param comment Comment to be added
+     */
     async addComment(comment: string){
         let res = await axios.post("https://www.cda.pl/a/comment", JSON.stringify({
             t: comment
@@ -125,7 +151,12 @@ export class CdaVideoApi{
         // })
         console.log(res);
     }
-
+    
+    /**
+     * Gets video data including comments
+     * @param commentSorting Sorting of comments
+     * @returns Video Data
+     */
     async getVideoData(commentSorting: "popular" | "newest" = "popular"): Promise<VideoData>{
         let comsort = commentSorting === "popular" ? "najpopularniejsze" : "najnowsze";
 
