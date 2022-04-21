@@ -1,11 +1,11 @@
 import axios from "axios";
 import cheerio, { Cheerio } from "cheerio";
 import { PlayerData } from "./interfaces";
-import { DOMWindow, JSDOM } from "jsdom";
 
 let doc: Document;
-let win: Window | DOMWindow;
+let win: Window | any;
 if (!document){
+    const { DOMWindow, JSDOM } = require("jsdom");
     const dom = new JSDOM(`<!DOCTYPE html><html><head></head><body></body></html>`);
     doc = dom.window.document;
     win = dom.window;
