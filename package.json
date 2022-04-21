@@ -4,6 +4,11 @@
   "description": "An api for cda.pl",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "url": "https://github.com/qba210/cda-api"
+  },
+  "homepage": "https://github.com/qba210/cda-api",
+  "readme": "https://github.com/qba210/cda-api/blob/main/README.md",
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
