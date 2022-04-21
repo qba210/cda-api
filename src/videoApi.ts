@@ -4,7 +4,7 @@ import { PlayerData } from "./interfaces";
 
 let doc: Document;
 let win: Window | any;
-if (!document){
+if (typeof document !== 'undefined'){
     const { DOMWindow, JSDOM } = require("jsdom");
     const dom = new JSDOM(`<!DOCTYPE html><html><head></head><body></body></html>`);
     doc = dom.window.document;
