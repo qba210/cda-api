@@ -57,7 +57,7 @@ export class CdaVideoApi{
     }
 
     private static async construct(id: string): Promise<CdaVideoApi>{
-        let vid = await axios.get(`https://www.cda.pl/video/${id}`, {withCredentials: true});
+        let vid = await axios.get(encodeURI(`https://www.cda.pl/video/${id}`), {withCredentials: true});
         let $ = cheerio.load(vid.data);
         return new CdaVideoApi(id, JSON.parse($(`div#mediaplayer${id}`).prop("player_data")));
     }
@@ -67,7 +67,6 @@ export class CdaVideoApi{
     }
 
     static async fromURL(url: string): Promise<CdaVideoApi>{
-        
         return CdaVideoApi.construct(this.URLtoID(url));
     }
 
@@ -119,7 +118,7 @@ export class CdaVideoApi{
         let key = parseInt(this.playerData.api.ts.split("_")[0]);
         let pos = await axios({
             method: "post",
-            url: `https://www.cda.pl/video/${this.id}`,
+            url: encodeURI(`https://www.cda.pl/video/${this.id}`),
             headers: {
                 "content-type": "application/json"
             },
@@ -159,7 +158,7 @@ export class CdaVideoApi{
     async getVideoData(commentSorting: "popular" | "newest" = "popular"): Promise<VideoData>{
         let comsort = commentSorting === "popular" ? "najpopularniejsze" : "najnowsze";
 
-        let $ = cheerio.load((await axios.get(`https://www.cda.pl/video/${this.id}`)).data);
+        let $ = cheerio.load((await axios.get(encodeURI(`https://www.cda.pl/video/${this.id}`))).data);
         let duration = $("span.pb-max-time").text();
         let title = $("span.title-name").children("h1").text();
         let description = $('span[itemprop="description"]').html()?.replace(/<br>/g, "\n") as string;
@@ -167,7 +166,7 @@ export class CdaVideoApi{
         let author = $("span.color-link-primary").text();
         let tags = $("a.tag-element").map((i, el) => $(el).text()).get();
 
-        let comres = (await axios.post(`https://www.cda.pl/video/${this.id}`, {"jsonrpc":"2.0","method":"changeSortComment","params":[this.id.substring(0, this.id.length - 2),"video",comsort,{}],"id":6}, {withCredentials: true}));
+        let comres = (await axios.post(encodeURI(`https://www.cda.pl/video/${this.id}`), {"jsonrpc":"2.0","method":"changeSortComment","params":[this.id.substring(0, this.id.length - 2),"video",comsort,{}],"id":6}, {withCredentials: true}));
         let com = cheerio.load(comres.data.result);
         console.log(this.id.substring(0, this.id.length - 2));
 

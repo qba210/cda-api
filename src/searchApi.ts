@@ -13,7 +13,7 @@ export interface SearchResult{
 
 export class CdaSearchApi{
     static async search(query: string, page: number = 1): Promise<SearchResult[]>{
-        let res = await axios.get(`https://www.cda.pl/video/show/${query.replace(/[\/\\ ]/gm, "_")}/p${page}`);
+        let res = await axios.get(encodeURI(`https://www.cda.pl/video/show/${query.replace(/[\/\\ ]/gm, "_")}/p${page}`));
         let resultsdoc = res.data;
         let $ = cheerio.load(resultsdoc);
         if ($('h2[style="float: none; display: block;"]').text() === "Strona, którą próbujesz oglądać nie istnieje") throw new NotFoundError(`Page ${page} not found`);
