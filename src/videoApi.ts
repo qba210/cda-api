@@ -1,6 +1,7 @@
 import axios from "axios";
 import cheerio, { Cheerio } from "cheerio";
 import { PlayerData } from "./interfaces";
+import { InvalidIDError } from "./errors";
 
 let doc: Document;
 let win: Window | any;
@@ -59,6 +60,7 @@ export class CdaVideoApi{
     private static async construct(id: string): Promise<CdaVideoApi>{
         let vid = await axios.get(encodeURI(`https://www.cda.pl/video/${id}`), {withCredentials: true});
         let $ = cheerio.load(vid.data);
+        if (!$(`div#mediaplayer${id}`).prop("player_data")) throw new InvalidIDError(id);
         return new CdaVideoApi(id, JSON.parse($(`div#mediaplayer${id}`).prop("player_data")));
     }
 
