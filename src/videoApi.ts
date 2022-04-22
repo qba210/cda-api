@@ -119,7 +119,7 @@ export class CdaVideoApi{
         let key = parseInt(this.playerData.api.ts.split("_")[0]);
         let pos = await axios({
             method: "post",
-            url: "https://www.cda.pl/video/9412059ee",
+            url: `https://www.cda.pl/video/${this.id}`,
             headers: {
                 "content-type": "application/json"
             },
